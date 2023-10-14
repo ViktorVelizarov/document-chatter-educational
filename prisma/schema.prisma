@@ -14,6 +14,7 @@ datasource db {
 model User {
   id    String @id @unique //matches kinde user id
   email String @unique
+  File    File[]          //telling prisma that each user can have multiple files
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id") // ? for optional bcz not every user is a customer
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
@@ -21,4 +22,26 @@ model User {
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
 }
 
+
+enum UploadStatus { //defining the diff states of a file, this is not a table
+  PENDING
+  PROCESSING
+  FAILED
+  SUCCESS
+}
+
+model File {
+  id   String @id @default(cuid()) // this means Prisma will generate an ID automaticly
+  name String
+
+  uploadStatus UploadStatus @default(PENDING) //seting default state to pending
+
+  url      String
+  key      String
+
+  createdAt DateTime @default(now())  //prisma gets date autoamticly
+  updatedAt DateTime @updatedAt       //prisma gets updatedAt automaticly
+  User      User?    @relation(fields: [userId], references: [id])  //realtion with user table
+  userId    String?
+}
 

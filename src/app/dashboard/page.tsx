@@ -1,6 +1,7 @@
 //server component for /dashboard
 
 //import Dashboard from '@/components/Dashboard'
+import Dashboard from '@/components/Dashboard'
 import { db } from '@/db'
 //import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
@@ -20,11 +21,11 @@ const Page = async () => {
     }
   })
 
-  if(!dbUser) redirect('/auth-callback?origin=dashboard')
+  if(!dbUser) redirect('/auth-callback?origin=dashboard') // if user is not synced with the DB we send them back to auth-callback
 
   //const subscriptionPlan = await getUserSubscriptionPlan()
 
-  return <div>{user.email}</div>
+  return <Dashboard/>
 }
 
 export default Page
