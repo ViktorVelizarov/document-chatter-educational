@@ -27,10 +27,10 @@ const UploadDropzone = ({ //component that handles the drag and drop
     useState<boolean>(false)
   const [uploadProgress, setUploadProgress] = //tracking the upload file progress so we can redirect the user when its at 100
     useState<number>(0)
-  const { toast } = useToast()
+  const { toast } = useToast() // function from shadcn to make toast notifications
 
 
-  const { startUpload } = useUploadThing('pdfUploader')
+  const { startUpload } = useUploadThing('pdfUploader') 
 
   //also since our normal upload progress state doesnt give us a % from 0 to a 100 but just gives us a sign when it gets to a 100
   //we are going to use something called "determiante progress bar" which means
@@ -40,10 +40,10 @@ const UploadDropzone = ({ //component that handles the drag and drop
 
   const { mutate: startPolling } = trpc.getFile.useMutation(
     {
-      onSuccess: (file) => {
+      onSuccess: (file) => {  //if the file exist in DB
         router.push(`/dashboard/${file.id}`)
       },
-      retry: true,
+      retry: true,   //retry to find file in DB unitl true
       retryDelay: 500,
     }
   )
@@ -76,7 +76,7 @@ const UploadDropzone = ({ //component that handles the drag and drop
         const res = await startUpload(acceptedFile)
 
         if (!res) {
-          return toast({
+          return toast({   //make a toast notification if there is an error
             title: 'Something went wrong',
             description: 'Please try again later',
             variant: 'destructive',
@@ -84,10 +84,9 @@ const UploadDropzone = ({ //component that handles the drag and drop
         }
 
         const [fileResponse] = res
-
         const key = fileResponse?.key
 
-        if (!key) {
+        if (!key) {  //also checking if the file has a key because this is essential
           return toast({
             title: 'Something went wrong',
             description: 'Please try again later',
@@ -99,7 +98,7 @@ const UploadDropzone = ({ //component that handles the drag and drop
         clearInterval(progressInterval)
         setUploadProgress(100)
 
-        startPolling({ key })
+        startPolling({ key })// check if file exists in DB and then redirect
       }}>
       {({ getRootProps, getInputProps, acceptedFiles }) => (
         <div
@@ -136,11 +135,6 @@ const UploadDropzone = ({ //component that handles the drag and drop
               {isUploading ? (  // check loading state
                 <div className='w-full mt-4 max-w-xs mx-auto'>
                   <Progress
-                    indicatorColor={
-                      uploadProgress === 100
-                        ? 'bg-green-500'
-                        : ''
-                    }
                     value={uploadProgress}
                     className='h-1 w-full bg-zinc-200'
                   />
@@ -167,11 +161,7 @@ const UploadDropzone = ({ //component that handles the drag and drop
   )
 }
 
-const UploadButton = ({
-  isSubscribed,
-}: {
-  isSubscribed: boolean
-}) => {
+const UploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -189,7 +179,7 @@ const UploadButton = ({
       </DialogTrigger>
 
       <DialogContent>
-        <UploadDropzone isSubscribed={isSubscribed} />   
+        <UploadDropzone isSubscribed={true} />   
       </DialogContent>
     </Dialog>
   )

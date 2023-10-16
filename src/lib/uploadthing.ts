@@ -6,5 +6,5 @@ import { generateReactHelpers } from "@uploadthing/react/hooks";
  
 import type { OurFileRouter } from "@/app/api/uploadthing/core";
  
-export const { useUploadThing } =
+export const { useUploadThing } =   //creating a useUploadThing hook that we use in UploadButton comp
   generateReactHelpers<OurFileRouter>();

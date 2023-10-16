@@ -60,6 +60,25 @@ export const appRouter = router({
     })
   }),
 
+  //getting the info of a file
+  getFile: privateProcedure
+    .input(z.object({ key: z.string() })) //we use .input which means this endpoint needs a mandatory input when called and we use zod to make sure the input we receive is of type string
+    .mutation(async ({ ctx, input }) => { //then after weve gotten the input, we handle the business logic in .mutation
+      const { userId } = ctx
+
+      const file = await db.file.findFirst({ //we search if the file we want is in the DB
+        where: {
+          key: input.key,
+          userId,
+        },
+      })
+
+      if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
+
+      return file //return the found file
+    }),
+
+
   //api endpoint for deleting a selected  file from dashbooard, this is also a POST req because .mutation is used for mutating/changind data.
   deleteFile: privateProcedure
     .input(z.object({ id: z.string() })) //whenever we call the API endpoint the zod
