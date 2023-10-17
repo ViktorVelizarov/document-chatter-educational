@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import Providers from '@/components/Providers'
 import 'react-loading-skeleton/dist/skeleton.css' //cool loading 
+import 'simplebar-react/dist/simplebar.min.css' //slibar for pdf render
 
 const inter = Inter({ subsets: ['latin'] })
 

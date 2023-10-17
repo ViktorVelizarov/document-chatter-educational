@@ -1,9 +1,11 @@
 //import ChatWrapper from '@/components/chat/ChatWrapper'
+import ChatWrapper from '@/components/ChatWrapper'
 import PdfRenderer from '@/components/PdfRenderer'
 import { db } from '@/db'
 //import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound, redirect } from 'next/navigation'
+import SimpleBar from 'simplebar-react' //npm install simplebar-react 
 
 interface PageProps {  //type for the params we receive 
   params: {
@@ -42,6 +44,9 @@ const Page = async ({ params }: PageProps) => { //nextjs automaticly sends the u
           </div>
         </div>
 
+        <div className='shrink-0 flex-[0.75] border-t border-gray-200 lg:w-96 lg:border-l lg:border-t-0'>
+          <ChatWrapper/>
+        </div>
        
       </div>
     </div>
